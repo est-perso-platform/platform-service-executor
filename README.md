@@ -12,6 +12,15 @@ Create a `.env.local` file at the root of the project and reference `.env.base` 
 
 Use Visual Studio Code to confirm debugging with your own environment variable file works.
 
+```
+.env.local
+
+SERVICEEXECUTION_ID=pse-1234
+PLATFORM_HOST=https://stage-platform.perso.ai
+PLATFORM_PRESHARED_KEY=plspsk-1234
+TIMEOUT=60
+```
+
 ### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
 
 The executor expects a `PlatformAgent` class subclassing `BasePlatformAgent` at `src/platform_agent.py`.
