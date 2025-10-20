@@ -7,8 +7,7 @@ RUN --mount=type=cache,target=/tmp/pip \
     PIP_CACHE_DIR=/tmp/pip \
     /usr/local/bin/python -m pip install \
         "fastapi[standard]==0.119.0" \
-        "httpx[http2]==0.28.1" \
-        "uvicorn[standard]==0.37.0" 
+        "httpx[http2]==0.28.1"
 
 WORKDIR /app
 
