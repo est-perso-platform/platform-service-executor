@@ -73,7 +73,7 @@ class PlatformStatusReportPayload(BaseModel):
 
 
 class BasePlatformAgent(ABC):
-    executor_name = "base-platform-agetn"
+    service_name = "base-platform-agetn"
 
     def __init__(
         self, platform_host: str, platform_preshared_key: str, serviceexecution_id: str
@@ -133,6 +133,17 @@ class BasePlatformAgent(ABC):
         raise NotImplementedError()
 
     def start(self):
+        try:
+            self._start()
+        except Exception as e:
+            self.report_log(f"Execution failed due to unexpected error: {e}")
+            self.update_status(
+                status=PlatformStatusEnum.FAILED,
+                failure_reason=PlatformFailureReasonEnum.SERVER_ERROR,
+            )
+            raise
+
+    def _start(self):
         self.values = self.get_values()
 
         input_values = {}
@@ -142,14 +153,7 @@ class BasePlatformAgent(ABC):
                 input_values[value.field_name] = value
 
         self.report_log("Task execution started.")
-        try:
-            response = self.execute_task(input_values=input_values)
-        except TypeError as e:
-            # execute_task does not accept input_values
-            raise
-        except Exception as e:
-            self.report_log(f"Task execution failed: {e}")
-            raise
+        response = self.execute_task(input_values=input_values)
         self.report_log("Task execution completed.")
 
         response_keys = set(response.keys())
@@ -186,6 +190,9 @@ class BasePlatformAgent(ABC):
 
         for field_name, value in response.items():
             self.send_output(field_name, value)
+
+        self.update_status(status=PlatformStatusEnum.SUCCESS)
+        self.report_log("Task execution succeeded.")
 
     def send_output(self, field_name: str, value: str | float | bool | None):
         if not getattr(self, "values", None):
@@ -234,3 +241,4 @@ class BasePlatformAgent(ABC):
             response = self.client.post(base_url, json=json_payload)
 
         response.raise_for_status()
+        logger.info(f"Output for field '{field_name}' sent successfully.")

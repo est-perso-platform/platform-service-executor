@@ -25,13 +25,13 @@ Use Visual Studio Code to confirm debugging (`F5`) with your own environment var
 
 The executor expects a `PlatformAgent` class subclassing `BasePlatformAgent` at `src/platform_agent.py`.
 
-You should specify `PlatformAgent.executor_name`. 
+You should specify `PlatformAgent.service_name`. It should match the service name specified in the Platform Service.
 
 You should implement `PlatformAgent.execute_task(input_values: dict[str, str | float | bool | None])` function that accepts `input_values: dict[str, str | float | bool | None]` and outputs a `dict[str, str | float | bool | None]`, as defined in the Platform Service input schema. If outputting a file, specify the location of the file.
 
 ```python
 class PlatformAgent(BasePlatformAgent):
-    executor_name = "speech-to-face-v1"
+    service_name = "speech-to-face-v1"
 
     def input_values(self, input_values: dict[str, str | float | bool | None]):
         return {
@@ -51,10 +51,10 @@ Note that if the log message contains information that should not be shown to th
 
 ```python
 class PlatformAgent(BasePlatformAgent):
-    executor_name = "speech-to-face-v1"
+    service_name = "speech-to-face-v1"
 
     def input_values(self, input_values: dict[str, str | float | bool | None]):
-        self.report_log(f"Starting {self.executor_name}")
+        self.report_log(f"Starting {self.service_name}")
 
         logger.info("Using Elevenlabs API Key: sk_1234")
 ```
@@ -70,7 +70,7 @@ However, if a task fails, you should report `PlatformStatusEnum.FAILED` with `fa
 
 ```python
 class PlatformAgent(BasePlatformAgent):
-    executor_name = "speech-to-face-v1"
+    service_name = "speech-to-face-v1"
 
     def input_values(self, input_values: dict[str, str | float | bool | None]):
         try:

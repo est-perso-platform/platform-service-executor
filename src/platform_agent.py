@@ -11,7 +11,7 @@ logger = get_logger()
 
 
 class PlatformAgent(BasePlatformAgent):
-    executor_name = "speech-to-face-v1"
+    service_name = "speech-to-face-v1"
 
     def execute_task(
         self,

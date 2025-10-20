@@ -22,10 +22,9 @@ def main():
     handle_signals(platform_agent, args.timeout)
 
     platform_agent.report_log(
-        f"Starting {platform_agent.executor_name} at worker {socket.gethostname()}."
+        f"Starting {platform_agent.service_name} at worker {socket.gethostname()}."
     )
 
-    # start execution
     platform_agent.start()
 
 
