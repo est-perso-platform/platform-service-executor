@@ -6,6 +6,8 @@ This module is a base for implementing Perso Platform Service executors.
 
 ### 1. Development Environment Setup
 
+Clone this repository to make it easy to merge future updates of the Platform Service Executor.
+
 Create a `.env.local` file at the root of the project and reference `.env.base` file to setup your own environment.
 
 Use Visual Studio Code to confirm debugging with your own environment variable file works.
