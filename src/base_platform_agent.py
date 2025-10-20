@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from abc import ABC, abstractmethod
 from pydantic import BaseModel, RootModel, field_validator
 from typing import List
+import urllib.parse
 
 from log import get_logger
 
@@ -87,7 +88,7 @@ class BasePlatformAgent(ABC):
         )
 
     def report_log(self, message: str):
-        logger.info(message)
+        logger.info(f"reported log message: {message}")
         payload = PlatformStatusReportPayload(log=message)
         payload.validate()
         response = self.client.post(
@@ -110,6 +111,7 @@ class BasePlatformAgent(ABC):
             json=payload.model_dump(exclude_none=True),
         )
         response.raise_for_status()
+        logger.info(f"updated status to {status}.")
 
     def get_values(self) -> dict[str, PlatformServiceExecutionValues]:
         response = self.client.get(
@@ -150,7 +152,7 @@ class BasePlatformAgent(ABC):
 
         for value in self.values.values():
             if value.schema_type == PlatformSchemaTypeEnum.INPUT:
-                input_values[value.field_name] = value
+                input_values[value.field_name] = value.value
 
         self.report_log("Task execution started.")
         response = self.execute_task(input_values=input_values)
@@ -219,16 +221,45 @@ class BasePlatformAgent(ABC):
             if not isinstance(value, str):
                 raise ValueError(f"Value for field '{field_name}' must be a file path.")
             try:
+                # is the value a file path?
                 with open(value, "rb") as f:
                     pass
             except FileNotFoundError:
-                raise ValueError(f"File '{value}' for field '{field_name}' not found.")
+                # it is not.
+                try:
+                    # is the value a URL?
+                    urllib.parse.urlparse(value)
+                except ValueError:
+                    # it is not.
+                    raise ValueError(
+                        f"Value for field '{field_name}' must be a valid file path or URL."
+                    )
 
         base_url = f"/api/services/v1/executions/{self.serviceexecution_id}/upload_output/{field_name}/"
 
         if field.field_type == PlatformFieldTypeEnum.FILE:
-            with open(value, "rb") as f:
-                response = self.client.post(base_url, files={"value": f})
+            filename = "default_filename"
+            try:
+                # try to guess filename from URL or file path
+                urllib_parsed = urllib.parse.urlparse(value)
+                filename = urllib_parsed.path.split("/")[-1]
+            except (ValueError, IndexError):
+                pass
+
+            try:
+                with open(value, "rb") as f:
+                    response = self.client.post(
+                        base_url,
+                        files={"file": (filename, f, "application/octet-stream")},
+                    )
+            except FileNotFoundError:
+                # it is not a file path. could be a URL.
+                try:
+                    response = self.client.post(base_url, json={"file_url": value})
+                except ValueError:
+                    raise ValueError(
+                        f"Value for field '{field_name}' must be a valid file path or URL."
+                    )
         else:
             json_payload = {}
             if field.field_type == PlatformFieldTypeEnum.STRING:
