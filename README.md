@@ -6,9 +6,17 @@ This module is a base for implementing Perso Platform Service executors.
 
 ### 1. Development Environment Setup
 
+#### Clone Repository
+
 Clone this repository, and create a seperate branch other than `main` and `develop` (e.g. `executor-main`) to make it easy to merge future updates of the Platform Service Executor.
 
-Create a `.env.local` file at the root of the project and reference `.env.base` file to setup your own environment.
+When an update occurs upstream, sync your fork and rebase your `executor-main`.
+
+#### Environment Variable
+
+For ease of development, you can give arguments using a local environment variable file.
+
+Create an `.env.local` file at the root of the project and reference `.env.base` file to setup your own environment.
 
 ```
 .env.local
@@ -20,6 +28,16 @@ TIMEOUT=60
 ```
 
 Use Visual Studio Code to confirm debugging (`F5`) with your own environment variable file works.
+
+#### Python Environment Setup
+
+Setup your local development python environment.
+
+```sh
+python -m venv .env
+source env/bin/activate
+python -m pip install -r requirements.txt
+```
 
 ### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
 
