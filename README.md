@@ -19,7 +19,7 @@ PLATFORM_PRESHARED_KEY=plspsk-1234
 TIMEOUT=60
 ```
 
-Use Visual Studio Code to confirm debugging (F5) with your own environment variable file works.
+Use Visual Studio Code to confirm debugging (`F5`) with your own environment variable file works.
 
 ### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
 
