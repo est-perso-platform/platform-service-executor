@@ -10,7 +10,7 @@ Create a `.env.local` file at the root of the project and reference `.env.base` 
 
 Use Visual Studio Code to confirm debugging with your own environment variable file works.
 
-#### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
+### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
 
 The executor expects a `PlatformAgent` class subclassing `BasePlatformAgent` at `src/platform_agent.py`.
 
@@ -30,7 +30,7 @@ class PlatformAgent(BasePlatformAgent):
         }
 ```
 
-#### 3. Logging
+### 3. Logging
 
 There are two types of logging scheme available inside `PlatformAgent.execute_task()`, `logger.info()` and `PlatformAgent.report_log(self, message: str)`. 
 
@@ -50,7 +50,7 @@ class PlatformAgent(BasePlatformAgent):
 
 
 
-#### 4. Reporting Status
+### 4. Reporting Status
 
 If `PlatformAgent.execute_task()` is finished and all output values are returned, the executor will automatically report `PlatformStatusEnum.SUCCESS`.
 
@@ -70,7 +70,7 @@ class PlatformAgent(BasePlatformAgent):
 ```
 
 
-#### 5. Building and Pushing
+### 5. Building and Pushing
 
 Use the supplied Makefile to build and push the docker container.
 
