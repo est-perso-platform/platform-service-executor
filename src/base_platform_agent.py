@@ -73,6 +73,8 @@ class PlatformStatusReportPayload(BaseModel):
 
 
 class BasePlatformAgent(ABC):
+    executor_name = "base-platform-agetn"
+
     def __init__(
         self, platform_host: str, platform_preshared_key: str, serviceexecution_id: str
     ):

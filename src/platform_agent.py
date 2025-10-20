@@ -1,4 +1,8 @@
-from base_platform_agent import BasePlatformAgent
+from base_platform_agent import (
+    BasePlatformAgent,
+    PlatformStatusEnum,
+    PlatformFailureReasonEnum,
+)
 
 
 from log import get_logger
