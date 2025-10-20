@@ -10,8 +10,6 @@ Clone this repository to make it easy to merge future updates of the Platform Se
 
 Create a `.env.local` file at the root of the project and reference `.env.base` file to setup your own environment.
 
-Use Visual Studio Code to confirm debugging with your own environment variable file works.
-
 ```
 .env.local
 
@@ -20,6 +18,8 @@ PLATFORM_HOST=https://stage-platform.perso.ai
 PLATFORM_PRESHARED_KEY=plspsk-1234
 TIMEOUT=60
 ```
+
+Use Visual Studio Code to confirm debugging (F5) with your own environment variable file works.
 
 ### 2. Creating your own `PlatformAgent` by subclassing `BasePlatformAgent`
 
