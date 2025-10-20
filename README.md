@@ -27,7 +27,7 @@ The executor expects a `PlatformAgent` class subclassing `BasePlatformAgent` at 
 
 You should specify `PlatformAgent.service_name`. It should match the service name specified in the Platform Service.
 
-You should implement `PlatformAgent.execute_task(input_values: dict[str, str | float | bool | None])` function that accepts `input_values: dict[str, str | float | bool | None]` and outputs a `dict[str, str | float | bool | None]`, as defined in the Platform Service input schema. If outputting a file, specify the location of the file.
+You should implement `PlatformAgent.execute_task(input_values: dict[str, str | float | bool | None])` function that accepts `input_values: dict[str, str | float | bool | None]` and outputs a `dict[str, str | float | bool | None]`, as defined in the Platform Service input schema. If outputting a file, specify either the URL or a local file path of the file.
 
 ```python
 class PlatformAgent(BasePlatformAgent):
@@ -38,6 +38,7 @@ class PlatformAgent(BasePlatformAgent):
             "output_string": "Hello World",
             "output_number": 123,
             "output_file": "/tmp/output.mp4",
+            "output_file2": "https://example.com/test.mp4"
         }
 ```
 
