@@ -69,13 +69,10 @@ you should use `PlatformAgent.report_log(message: str)` to log messages that is 
 Note that if the log message contains information that should not be shown to the user, you should use `logger.info()`.
 
 ```python
-class PlatformAgent(BasePlatformAgent):
-    service_name = "speech-to-face-v1"
+def input_values(self, input_values: dict[str, str | float | bool | None]):
+    self.report_log(f"Starting {self.service_name}")
 
-    def input_values(self, input_values: dict[str, str | float | bool | None]):
-        self.report_log(f"Starting {self.service_name}")
-
-        logger.info("Using Elevenlabs API Key: sk_1234")
+    logger.info("Using Elevenlabs API Key: sk_1234")
 ```
 
 
@@ -88,15 +85,15 @@ However, if a task fails, you should report `PlatformStatusEnum.FAILED` with `fa
 
 
 ```python
-class PlatformAgent(BasePlatformAgent):
-    service_name = "speech-to-face-v1"
-
-    def input_values(self, input_values: dict[str, str | float | bool | None]):
-        try:
-            result = 1 / 0
-        except ZeroDivisionError:
-            self.report_log("Error occured while calculating numbers.")
-            self.update_status(status=PlatformStatusEnum.FAILED, failure_reason=PlatformFailureReasonEnum.SERVER_ERROR)
+def input_values(self, input_values: dict[str, str | float | bool | None]):
+    try:
+        result = 1 / 0
+    except ZeroDivisionError:
+        self.report_log("Error occured while calculating numbers.")
+        self.update_status(
+            status=PlatformStatusEnum.FAILED,
+            failure_reason=PlatformFailureReasonEnum.SERVER_ERROR
+        )
 ```
 
 
