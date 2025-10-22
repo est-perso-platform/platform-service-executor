@@ -68,7 +68,7 @@ class PlatformAgent(BasePlatformAgent):
 
 There are two types of logging scheme available inside `PlatformAgent.execute_task()`, `logger.info()` and `PlatformAgent.report_log(self, message: str)`. 
 
-you should use `PlatformAgent.report_log(message: str)` to log messages that is visable to the user.
+You should use `PlatformAgent.report_log(message: str)` to log messages that is visable to the user.
 
 Note that if the log message contains information that should not be shown to the user, you should use `logger.info()`.
 

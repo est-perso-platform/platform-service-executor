@@ -149,9 +149,11 @@ class BasePlatformAgent(ABC):
         self.values = self.get_values()
 
         input_values = {}
+        logger.debug("Input values:")
 
         for value in self.values.values():
             if value.schema_type == PlatformSchemaTypeEnum.INPUT:
+                logger.debug(f"    {value.field_name}: {value.value}")
                 input_values[value.field_name] = value.value
 
         self.report_log("Task execution started.")
@@ -190,7 +192,9 @@ class BasePlatformAgent(ABC):
                 f"Output of execute_task() missing required output fields: {', '.join(missing_outputs)}"
             )
 
+        logger.debug("Sending output values:")
         for field_name, value in response.items():
+            logger.debug(f"    {field_name}: {value}")
             self.send_output(field_name, value)
 
         self.update_status(status=PlatformStatusEnum.SUCCESS)
